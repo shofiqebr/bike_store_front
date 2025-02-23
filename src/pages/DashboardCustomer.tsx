@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../redux/features/hooks";
 import { logout } from "../redux/features/auth/authSlice";
 
@@ -22,6 +22,14 @@ const DashboardCustomer = () => {
             <li>
               <button
                 className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
+                onClick={() => navigate("/")}
+              >
+                Home
+              </button>
+            </li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
                 onClick={() => navigate("/customer-dashboard/orders")}
               >
                 My Orders
@@ -30,14 +38,14 @@ const DashboardCustomer = () => {
             <li>
               <button
                 className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-                onClick={() => navigate("/customer-dashboard/profile")}
+                onClick={() => navigate("/dashboardCustomer/profile")}
               >
                 Profile
               </button>
             </li>
             <li>
               <button
-                className="w-full text-left px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+                className="w-full text-left px-4 py-2 rounded-lg bg-accent text-white hover:bg-red-600 transition"
                 onClick={handleLogout}
               >
                 Logout
@@ -56,10 +64,11 @@ const DashboardCustomer = () => {
 
         {/* Orders Overview */}
         <div className="mt-6 bg-white shadow-lg p-6 rounded-lg">
-          <h2 className="text-xl font-semibold text-gray-700">Recent Orders</h2>
-          <div className="mt-4">
-            <p className="text-gray-500">No recent orders found.</p>
+
+          <div>
+            <p></p>
           </div>
+         <Outlet/>
         </div>
       </main>
     </div>

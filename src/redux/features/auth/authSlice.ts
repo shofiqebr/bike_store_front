@@ -10,7 +10,7 @@ export interface IUser {
   }
   
 interface AuthState {
-  user: IUser | null;
+  user:  Partial<IUser> | null;
   token: string | null;
 }
 

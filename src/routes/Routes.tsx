@@ -7,6 +7,8 @@ import AllProducts from "../pages/AllProducts";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
 import DashboardCustomer from "../pages/DashboardCustomer";
+import Profile from "../components/Profile";
+import Signup from "../pages/Signup";
 
 
 
@@ -26,6 +28,10 @@ export  const router = createBrowserRouter([
           element: <Login/>
         },
         {
+          path:'/signup',
+          element: <Signup/>
+        },
+        {
           path:'/allProducts',
           element: <AllProducts/>
         },
@@ -42,6 +48,13 @@ export  const router = createBrowserRouter([
     },
     {
       path:'/dashboardCustomer',
-      element: <DashboardCustomer/>
+      element: <DashboardCustomer/>,
+      errorElement: <ErrorPage/>,
+      children: [
+        {
+          path:'profile',
+          element: <Profile/>
+        }
+]
     },
   ]);
