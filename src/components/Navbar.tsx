@@ -1,9 +1,20 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppSelector } from "../redux/features/hooks";
+import { RootState } from "../redux/features/store";
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/features/auth/authSlice";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const Logo = 'https://res.cloudinary.com/dal1rjdwl/image/upload/v1740143116/logo_txu2ni.png'
+  const navigate = useNavigate()// Initialize navigate
+  const dispatch = useDispatch()
+  const handleLogout = () => {
+    dispatch(logout()); // Dispatch logout action
+    navigate("/login"); // Redirect to login page after logout
+  };
+  const user = useAppSelector((state: RootState) => state.auth.user);
 
   return (
     <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
@@ -28,10 +39,10 @@ const Navbar = () => {
                 Home
               </Link>
               <Link
-                to="/bikes"
+                to="/allProducts"
                 className="hover:text-white hover:bg-primary text-primary bg-white font-bold transition-colors border border-primary py-1 px-4 rounded-lg "
               >
-                Bikes
+                All Products
               </Link>
               <Link
                 to="/about"
@@ -45,17 +56,34 @@ const Navbar = () => {
               >
                 Contact
               </Link>
+              <Link
+                to={user?.role === "admin" ? "/admin-dashboard" : "/dashboardCustomer"}
+                className="hover:text-white hover:bg-primary text-primary bg-white font-bold transition-colors border border-primary py-1 px-4 rounded-lg "
+              >
+                Dashboard
+              </Link>
             </div>
          
 
           {/* Buttons */}
           <div className="hidden md:flex space-x-4">
+            {
+              user?
+              <div
+              onClick={handleLogout}
+              className="px-4 py-1 border border-primary text-primary rounded-xl hover:bg-primary hover:text-white transition-colors"
+            >
+              Logout
+            </div>
+            :
+
             <Link
               to="/login"
               className="px-4 py-1 border border-primary text-primary rounded-xl hover:bg-primary hover:text-white transition-colors"
             >
               Login
             </Link>
+            }
             <Link
               to="/signup"
               className="px-4 py-1 bg-primary text-white rounded-xl hover:bg-secondary transition-colors"

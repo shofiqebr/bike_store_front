@@ -81,7 +81,7 @@ const FeaturedProducts = () => {
         {/* View All Button */}
         <div className="flex justify-center mt-8">
           <Link
-            to="/all-products"
+            to="/allProducts"
             className="px-6 py-3 bg-accent text-white font-semibold rounded-lg hover:bg-blue-700 transition"
           >
             View All
