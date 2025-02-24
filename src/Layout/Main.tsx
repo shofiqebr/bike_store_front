@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 const Main = () => {
   return (
     <div className="max-w-[1920px]">
+      
       <Navbar />
       <Outlet />
       <Footer/>

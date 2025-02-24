@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../redux/api/authApi';
 import { setUser } from '../redux/features/auth/authSlice';
+import { useDispatch } from 'react-redux';
 
 const Signup: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    role: '', // Default role
+    role: 'customer', // Default role
     phone: '',
     address: '',
     city: '',
@@ -32,13 +35,13 @@ const Signup: React.FC = () => {
       // Perform the register mutation call
       const response = await register(formData).unwrap();
   
-      // Handle successful registration - dispatch the user data to Redux
-      const user = response.data.user; // Assuming the response contains user data
+      
+      const user = response.data.user; 
       dispatch(setUser({ user }));
   
       // Redirect to home or dashboard after successful registration
-      alert('User registered successfully');
       navigate('/'); // Navigate to the home or dashboard page
+      // alert('User registered successfully');
     } catch (err: any) {
       console.error('Registration Error:', err?.data?.message || 'Something went wrong');
       alert('Error registering user');
