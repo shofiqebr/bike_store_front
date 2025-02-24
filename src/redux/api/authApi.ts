@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "./baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -16,7 +17,13 @@ const authApi = baseApi.injectEndpoints({
               body: userData,
             }),
           }),
+          getUsers: builder.query<any, void>({
+            query: () => ({
+                url: "/auth/getAllUsers",  
+                method: "GET",
+            }),
+        }),
     })
 })
 
-export const {useLoginMutation, useRegisterMutation} = authApi
+export const {useLoginMutation, useRegisterMutation , useGetUsersQuery  } = authApi
