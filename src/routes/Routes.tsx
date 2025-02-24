@@ -52,9 +52,13 @@ export  const router = createBrowserRouter([
       errorElement: <ErrorPage/>,
       children: [
         {
+          path:'dashboardCustomer',
+          element: <DashboardCustomer/>
+        },
+        {
           path:'profile',
           element: <Profile/>
-        }
+        },
 ]
     },
   ]);
