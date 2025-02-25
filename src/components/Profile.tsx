@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useAppSelector } from "../redux/features/hooks";
-import { useGetUsersQuery } from "../redux/api/authApi";
+import { useGetUsersQuery, useUpdateUserMutation } from "../redux/api/authApi";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
 const userInLocal = useAppSelector((state) => state.auth.user); 
-
-  const { data, error, isLoading } = useGetUsersQuery();
+const navigate = useNavigate()
+  const { data, error, isLoading, refetch } = useGetUsersQuery();
   // console.log(data)
   const user =  data?.data?.find((item)=> item.email == userInLocal?.email)
+
+  const [updateUser] = useUpdateUserMutation();
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -22,13 +25,19 @@ const userInLocal = useAppSelector((state) => state.auth.user);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = () => {
-    // Call API to update profile
-    console.log("Profile Updated:", formData);
+  const handleUpdate = async () => {
+    try {
+      await updateUser({ userId: user._id, updateData: formData }).unwrap();
+      navigate('/dashboardCustomer')
+      refetch();
+    } catch (error) {
+      console.error("Update Error:", error);
+      alert("Failed to update profile");
+    }
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <div className=" mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold text-gray-800 text-center">Profile Update</h2>
 
       <div className="mt-4">
@@ -50,7 +59,7 @@ const userInLocal = useAppSelector((state) => state.auth.user);
           className="w-full border border-gray-300 rounded-lg p-2 mt-1 bg-gray-100"
         />
 
-        <label className="block text-gray-600 font-medium mt-4">Role:</label>
+        {/* <label className="block text-gray-600 font-medium mt-4">Role:</label>
         <select
           name="role"
           value={formData.role}
@@ -59,7 +68,7 @@ const userInLocal = useAppSelector((state) => state.auth.user);
         >
           <option value="customer">Customer</option>
           <option value="admin">Admin</option>
-        </select>
+        </select> */}
 
         <label className="block text-gray-600 font-medium mt-4">Phone:</label>
         <input

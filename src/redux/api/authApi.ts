@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "./baseApi";
 
+
+
 const authApi = baseApi.injectEndpoints({
+
     endpoints: (builder) => ({
         login: builder.mutation({
             query: (userInfo) => ({
@@ -23,7 +26,14 @@ const authApi = baseApi.injectEndpoints({
                 method: "GET",
             }),
         }),
+        updateUser: builder.mutation({
+            query: ({ userId, updateData }) => ({
+              url: `/auth/update/${userId}`,
+              method: "PUT",
+              body: updateData,
+            }),
+          }),
     })
 })
 
-export const {useLoginMutation, useRegisterMutation , useGetUsersQuery  } = authApi
+export const {useLoginMutation, useRegisterMutation , useGetUsersQuery, useUpdateUserMutation  } = authApi

@@ -3,16 +3,15 @@ import { useAppSelector, useAppDispatch } from "../redux/features/hooks";
 import { logout } from "../redux/features/auth/authSlice";
 import { useGetUsersQuery } from "../redux/api/authApi";
 
-const DashboardCustomer = () => {
+const DashboardAdmin = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation(); // Get current route
-  const userInLocal = useAppSelector((state) => state.auth.user); 
-  // console.log(userInLocal)
-
+  const userInLocal = useAppSelector((state) => state.auth.user);
+  
   const { data, error, isLoading } = useGetUsersQuery();
-  const user =  data?.data?.find((item)=> item.email == userInLocal?.email)
-  // console.log(user)
+  const user = data?.data?.find((item) => item.email == userInLocal?.email);
+  console.log(userInLocal)
 
   const handleLogout = () => {
     dispatch(logout());
@@ -20,13 +19,13 @@ const DashboardCustomer = () => {
   };
 
   // Check if Outlet has content (i.e., user is on a nested route)
-  const isNestedRoute = location.pathname !== "/dashboardCustomer";
+  const isNestedRoute = location.pathname !== "/dashboardAdmin";
 
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-700 mb-2">Dashboard</h2>
+        <h2 className="text-2xl font-bold text-gray-700 mb-2">Admin Dashboard</h2>
         <h2 className="text-xl font-semibold text-gray-700 mb-4">{user?.email}</h2>
         <nav>
           <ul className="space-y-4">
@@ -38,32 +37,90 @@ const DashboardCustomer = () => {
                 Home
               </button>
             </li>
+
+            {/* Product Management */}
             <li>
               <button
                 className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-                onClick={() => navigate("/dashboardCustomer/myOrders")}
+                onClick={() => navigate("/admin-dashboard/products")}
               >
-                My Orders
+                Products
               </button>
-            </li>
-            <li>
-              <button
-                className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-                onClick={() => navigate("/dashboardCustomer/profile")}
-              >
-                Update Profile
-              </button>
+              <ul className="space-y-2 pl-4">
+                <li>
+                  <button
+                    className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    onClick={() => navigate("/admin-dashboard/products/create")}
+                  >
+                    Create Product
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    onClick={() => navigate("/admin-dashboard/products/myOrders")}
+                  >
+                    View Products
+                  </button>
+                </li>
+              </ul>
             </li>
 
-            {/* "Go to Dashboard" Button (Only Shows on Nested Routes) */}
-          {isNestedRoute && (
-            <button
-              onClick={() => navigate("/dashboardCustomer")}
-              className="w-full text-left px-4 py-2 rounded-lg bg-accent text-white hover:bg-red-600 transition"
-            >
-              Go to Dashboard
-            </button>
-          )}
+            {/* Order Management */}
+            <li>
+              <button
+                className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
+                onClick={() => navigate("/dashboardAdmin/orders")}
+              >
+                Orders
+              </button>
+              <ul className="space-y-2 pl-4">
+                <li>
+                  <button
+                    className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    onClick={() => navigate("/dashboardAdmin/orders")}
+                  >
+                    View Orders
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    onClick={() => navigate("/dashboardAdmin/orders/manage")}
+                  >
+                    Manage Orders
+                  </button>
+                </li>
+              </ul>
+            </li>
+
+            {/* User Management */}
+            <li>
+              <button
+                className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
+                onClick={() => navigate("/dashboardAdmin/users")}
+              >
+                Users
+              </button>
+              <ul className="space-y-2 pl-4">
+                <li>
+                  <button
+                    className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    onClick={() => navigate("/dashboardAdmin/users")}
+                  >
+                    View Users
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                    onClick={() => navigate("/dashboardAdmin/users/deactivate")}
+                  >
+                    Deactivate User
+                  </button>
+                </li>
+              </ul>
+            </li>
 
             <li>
               <button
@@ -81,7 +138,7 @@ const DashboardCustomer = () => {
       <main className="flex-1 p-6 bg-gray-100 min-h-screen">
         <div className="max-w-4xl mx-auto">
           {/* Show Welcome Message & User Details ONLY if it's NOT a nested route */}
-          {!isNestedRoute && (
+          {isNestedRoute && (
             <>
               {/* Dashboard Header */}
               <h1 className="text-3xl font-bold text-gray-800">
@@ -130,6 +187,8 @@ const DashboardCustomer = () => {
           )}
 
           {/* Dynamic Content */}
+
+          
           <div className="mt-8">
             <Outlet />
           </div>
@@ -139,4 +198,4 @@ const DashboardCustomer = () => {
   );
 };
 
-export default DashboardCustomer;
+export default DashboardAdmin;

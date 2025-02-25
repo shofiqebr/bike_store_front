@@ -86,7 +86,7 @@ const Signup: React.FC = () => {
             required
           />
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Role:</label>
           <select
             name="role"
@@ -97,7 +97,7 @@ const Signup: React.FC = () => {
             <option value="customer">Customer</option>
             <option value="admin">Admin</option>
           </select>
-        </div>
+        </div> */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Phone (optional):</label>
           <input

@@ -9,6 +9,9 @@ import Contact from "../pages/Contact";
 import DashboardCustomer from "../pages/DashboardCustomer";
 import Profile from "../components/Profile";
 import Signup from "../pages/Signup";
+import MyOrders from "../pages/MyOrders";
+import DashboardAdmin from "../pages/DashboardAdmin";
+import CreateProduct from "../components/CreateProduct";
 
 
 
@@ -58,6 +61,29 @@ export  const router = createBrowserRouter([
         {
           path:'profile',
           element: <Profile/>
+        },
+        {
+          path:'myOrders',
+          element: <MyOrders/>
+        },
+]
+    },
+    {
+      path:'/admin-dashboard',
+      element: <DashboardAdmin/>,
+      errorElement: <ErrorPage/>,
+      children: [
+        {
+          path:'admin-dashboard',
+          element: <DashboardAdmin/>
+        },
+        {
+          path:'products/create',
+          element: <CreateProduct/>
+        },
+        {
+          path:'products/myOrders',
+          element: <MyOrders/>
         },
 ]
     },
