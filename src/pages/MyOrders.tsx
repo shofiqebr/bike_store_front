@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 import { useGetUserOrdersQuery } from "../redux/api/orderApi";
 import { useAppSelector } from "../redux/features/hooks";
 
@@ -23,8 +25,8 @@ const MyOrders = () => {
             </tr>
           </thead>
           <tbody>
-            {orders?.data?.map((order) => (
-              <tr key={order._id} className="text-center">
+            {orders?.data?.map((order: { _id: boolean | Key | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; createdAt: string | number | Date; totalPrice: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; status: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
+              <tr  className="text-center">
                 <td className="border border-gray-300 px-4 py-2">{order._id}</td>
                 <td className="border border-gray-300 px-4 py-2">
                   {new Date(order.createdAt).toLocaleDateString()}

@@ -6,7 +6,7 @@ export interface IUser {
     name: string;
     email: string;
     role: "admin" | "customer"; // Define roles explicitly
-    token: string;
+    token?: string;
   }
   
 interface AuthState {

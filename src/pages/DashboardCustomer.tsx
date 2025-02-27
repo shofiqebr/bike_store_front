@@ -10,8 +10,8 @@ const DashboardCustomer = () => {
   const userInLocal = useAppSelector((state) => state.auth.user); 
   // console.log(userInLocal)
 
-  const { data, error, isLoading } = useGetUsersQuery();
-  const user =  data?.data?.find((item)=> item.email == userInLocal?.email)
+  const { data } = useGetUsersQuery();
+  const user =  data?.data?.find((item: { email: string | undefined; })=> item.email == userInLocal?.email)
   // console.log(user)
 
   const handleLogout = () => {

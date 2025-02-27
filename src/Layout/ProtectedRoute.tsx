@@ -6,9 +6,9 @@ import { Navigate } from "react-router-dom";
 
 const ProtectedRout = ({children}: {children: ReactNode}) => {
    
-    const userInLocal = useAppSelector((state) => state.auth.user);
-    console.log(userInLocal)
-    const token = userInLocal?.token
+    const token = useAppSelector((state) => state.auth.token);
+    // console.log(token)
+    // const token = userInLocal?.token
     if(!token){
         return <Navigate to='/login' replace={true}/>
     }

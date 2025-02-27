@@ -18,7 +18,7 @@ const Signup: React.FC = () => {
     city: '',
   });
 
-  const [register, { isLoading, isError, error }] = useRegisterMutation(); // Use the mutation hook
+  const [register, { isLoading}] = useRegisterMutation(); // Use the mutation hook
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -37,7 +37,10 @@ const Signup: React.FC = () => {
   
       
       const user = response.data.user; 
-      dispatch(setUser({ user }));
+      dispatch(setUser({
+        user,
+        token: ''
+      }));
   
       // Redirect to home or dashboard after successful registration
       navigate('/'); // Navigate to the home or dashboard page

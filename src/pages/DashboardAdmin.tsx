@@ -9,9 +9,9 @@ const DashboardAdmin = () => {
   const location = useLocation(); // Get current route
   const userInLocal = useAppSelector((state) => state.auth.user);
   
-  const { data, error, isLoading } = useGetUsersQuery();
-  const user = data?.data?.find((item) => item.email == userInLocal?.email);
-  console.log(userInLocal)
+  const { data } = useGetUsersQuery();
+  const user = data?.data?.find((item: { email: string | undefined; }) => item.email == userInLocal?.email);
+  // console.log(userInLocal)
 
   const handleLogout = () => {
     dispatch(logout());
@@ -42,7 +42,7 @@ const DashboardAdmin = () => {
             <li>
               <button
                 className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-                onClick={() => navigate("/admin-dashboard/products")}
+                // onClick={() => navigate("/admin-dashboard/products")}
               >
                 Products
               </button>
@@ -58,7 +58,7 @@ const DashboardAdmin = () => {
                 <li>
                   <button
                     className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                    onClick={() => navigate("/admin-dashboard/products/myOrders")}
+                    // onClick={() => navigate("/admin-dashboard/products/myOrders")}
                   >
                     View Products
                   </button>
@@ -70,7 +70,7 @@ const DashboardAdmin = () => {
             <li>
               <button
                 className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-                onClick={() => navigate("/dashboardAdmin/orders")}
+                // onClick={() => navigate("/dashboardAdmin/orders")}
               >
                 Orders
               </button>
@@ -86,7 +86,7 @@ const DashboardAdmin = () => {
                 <li>
                   <button
                     className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                    onClick={() => navigate("/dashboardAdmin/orders/manage")}
+                    // onClick={() => navigate("/dashboardAdmin/orders/manage")}
                   >
                     Manage Orders
                   </button>
@@ -98,7 +98,7 @@ const DashboardAdmin = () => {
             <li>
               <button
                 className="w-full text-left px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-                onClick={() => navigate("/dashboardAdmin/users")}
+                // onClick={() => navigate("/dashboardAdmin/users")}
               >
                 Users
               </button>
@@ -106,7 +106,7 @@ const DashboardAdmin = () => {
                 <li>
                   <button
                     className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                    onClick={() => navigate("/dashboardAdmin/users")}
+                    // onClick={() => navigate("/dashboardAdmin/users")}
                   >
                     View Users
                   </button>
@@ -114,7 +114,7 @@ const DashboardAdmin = () => {
                 <li>
                   <button
                     className="w-full text-left px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
-                    onClick={() => navigate("/dashboardAdmin/users/deactivate")}
+                    // onClick={() => navigate("/dashboardAdmin/users/deactivate")}
                   >
                     Deactivate User
                   </button>

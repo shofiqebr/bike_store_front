@@ -12,6 +12,10 @@ import Signup from "../pages/Signup";
 import MyOrders from "../pages/MyOrders";
 import DashboardAdmin from "../pages/DashboardAdmin";
 import CreateProduct from "../components/CreateProduct";
+import ProductDetails from "../pages/ProductDetails";
+import Checkout from "../pages/Checkout";
+import ProtectedRout from "../Layout/ProtectedRoute";
+import PaymentVerify from "../pages/PaymentVerify";
 
 
 
@@ -39,6 +43,14 @@ export  const router = createBrowserRouter([
           element: <AllProducts/>
         },
         {
+          path:'/product/:id',
+          element: <ProductDetails/>
+        },
+        {
+          path:'/checkout/:id',
+          element:<ProtectedRout><Checkout/></ProtectedRout> 
+        },
+        {
           path:'/about',
           element: <About/>
         },
@@ -46,17 +58,21 @@ export  const router = createBrowserRouter([
           path:'/contact',
           element: <Contact/>
         },
+        {
+          path:'paymentVerify',
+          element: <PaymentVerify/>
+        },
        
       ]
     },
     {
       path:'/dashboardCustomer',
-      element: <DashboardCustomer/>,
+      element: <ProtectedRout><DashboardCustomer/></ProtectedRout> ,
       errorElement: <ErrorPage/>,
       children: [
         {
           path:'dashboardCustomer',
-          element: <DashboardCustomer/>
+          element: <ProtectedRout><DashboardCustomer/></ProtectedRout>
         },
         {
           path:'profile',
@@ -66,16 +82,17 @@ export  const router = createBrowserRouter([
           path:'myOrders',
           element: <MyOrders/>
         },
+       
 ]
     },
     {
       path:'/admin-dashboard',
-      element: <DashboardAdmin/>,
+      element: <ProtectedRout><DashboardAdmin/></ProtectedRout>,
       errorElement: <ErrorPage/>,
       children: [
         {
           path:'admin-dashboard',
-          element: <DashboardAdmin/>
+          element:<ProtectedRout><DashboardAdmin/></ProtectedRout>
         },
         {
           path:'products/create',

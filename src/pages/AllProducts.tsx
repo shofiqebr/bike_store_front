@@ -1,8 +1,10 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, SetStateAction, useState } from "react";
 import { useGetAllProductsQuery } from "../redux/api/productApi";
+import { Link } from "react-router-dom";
 
 const AllProducts = () => {
-  const { data: products, isLoading, isError, error } = useGetAllProductsQuery(undefined);
+  const { data: products } = useGetAllProductsQuery(undefined);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
     minPrice: 0,
@@ -14,12 +16,12 @@ const AllProducts = () => {
   // console.log("Fetched products:", products);
 
   // Handle search input
-  const handleSearch = (e) => {
+  const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
     setSearchTerm(e.target.value);
   };
 
   // Handle filter changes
-  const handleFilterChange = (e) => {
+  const handleFilterChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
@@ -28,7 +30,7 @@ const AllProducts = () => {
   const allProducts = Array.isArray(products?.result) ? products.result : [];
 
   // Filter products based on search term & filters
-  const filteredProducts = allProducts.filter((product) => {
+  const filteredProducts = allProducts.filter((product: { name: string; category: string; brand: string; price: number; }) => {
     const matchesSearch =
       searchTerm === "" || product.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filters.category ? product.category === filters.category : true;
@@ -37,8 +39,8 @@ const AllProducts = () => {
     return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
   });
 
-  if (isLoading) return <p className="text-center text-gray-700">Loading...</p>;
-  if (isError) return <p className="text-center text-red-500">Error: {error?.message}</p>;
+  // if (isLoading) return <p className="text-center text-gray-700">Loading...</p>;
+  // if (isError) return <p className="text-center text-red-500">Error: {error?.message}</p>;
 
   return (
     <div className="max-w-7xl mx-auto p-6 min-h-[600px]">
@@ -86,17 +88,19 @@ const AllProducts = () => {
       {/* Products List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
+          filteredProducts?.slice(-6).reverse().map((product: { id: Key | null | undefined; image: string | undefined; name: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; brand: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; category: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; price: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; _id: any; }) => (
             <div key={product.id} className="border p-4 rounded-lg shadow-md">
-              <img src={product.image} alt={product.name} className="w-full h-40 rounded-md" />
+              <img src={product.image}  className="w-full h-40 rounded-md" />
               <h3 className="text-xl font-semibold mt-2">{product.name}</h3>
               <p className="text-gray-600">
                 {product.brand} - {product.category}
               </p>
               <p className="font-bold">${product.price}</p>
+              <Link to={`/product/${product._id}`}>
               <button className="bg-primary text-white px-4 py-2 rounded-md mt-2">
                 View Details
               </button>
+              </Link>
             </div>
           ))
         ) : (

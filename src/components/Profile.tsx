@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
 const userInLocal = useAppSelector((state) => state.auth.user); 
 const navigate = useNavigate()
-  const { data, error, isLoading, refetch } = useGetUsersQuery();
+  const { data, refetch } = useGetUsersQuery();
   // console.log(data)
-  const user =  data?.data?.find((item)=> item.email == userInLocal?.email)
+  const user =  data?.data?.find((item: { email: string | undefined; })=> item.email == userInLocal?.email)
 
   const [updateUser] = useUpdateUserMutation();
 

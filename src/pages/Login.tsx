@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // For redirection
 import InputField from "../components/InputField";
@@ -12,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate(); // For navigation after login
 
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [login, { data, error, isLoading }] = useLoginMutation(); // Added isLoading state
+  const [login, { isLoading }] = useLoginMutation(); // Added isLoading state
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
