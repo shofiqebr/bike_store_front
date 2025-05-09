@@ -16,6 +16,9 @@ import ProductDetails from "../pages/ProductDetails";
 import Checkout from "../pages/Checkout";
 import ProtectedRout from "../Layout/ProtectedRoute";
 import PaymentVerify from "../pages/PaymentVerify";
+import Category from "../pages/Category";
+import Offers from "../pages/Offers";
+import BlogSection from "../pages/BlogSection";
 
 
 
@@ -55,11 +58,23 @@ export  const router = createBrowserRouter([
           element: <About/>
         },
         {
+          path:'/category',
+          element: <Category/>
+        },
+        {
+          path:'/offers',
+          element: <Offers/>
+        },
+        {
+          path:'/blog',
+          element: <BlogSection/>
+        },
+        {
           path:'/contact',
           element: <Contact/>
         },
         {
-          path:'paymentVerify',
+          path:'order/paymentVerify',
           element: <PaymentVerify/>
         },
        

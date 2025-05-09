@@ -1,6 +1,7 @@
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import { Typewriter } from "react-simple-typewriter";
 
 const Banner = () => {
     const BannerImg =
@@ -14,11 +15,28 @@ const Banner = () => {
           height: "400px", // Adjust height as needed
           width: "100%",
         }}
-        className="flex justify-around">
-        <div className="flex flex-col items-center justify-center">
-          <p className="text-4xl font-bold">The <span className="text-accent">worlds</span>  Most <span className="text-accent">Latest</span> Technology</p>
-          <p className="text-3xl font-bold"><span className="text-accent">Fly</span> as <span className="text-accent">Fast</span> as <span className="text-accent">Rocket</span></p>
-        </div>
+        className="flex justify-around items-center">
+              {/* Text section */}
+              
+      <div className="text-black w-full  md:w-1/2 text-center  space-y-4">
+        <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight text-left pl-20 whitespace-nowrap">
+          Experience the  {' '}
+          <span className="text-accent">
+            <Typewriter
+              words={["Future of Speed", " Glamourous Design", "Feel of Comfort", " Latest Technology"]}
+              loop={0}
+              cursor
+              cursorStyle=""
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={2000}
+            />
+          </span>
+        </h1>
+        <p className="text-lg md:text-xl font-medium text-gray-600">
+          Ride smarter, faster, and safer with our innovative <br />  electric and performance bikes.
+        </p>
+      </div>
 
 
         <div className="flex items-center justify-center w-1/2">

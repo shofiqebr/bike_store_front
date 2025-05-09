@@ -1,111 +1,167 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useGetAllProductsQuery } from "../redux/api/productApi";
 import { Link } from "react-router-dom";
 
 const AllProducts = () => {
   const { data: products } = useGetAllProductsQuery(undefined);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6;
+
   const [filters, setFilters] = useState({
     minPrice: 0,
     maxPrice: 100000000,
     category: "",
     brand: "",
+    rating: 0,
   });
 
-  // console.log("Fetched products:", products);
-
-  // Handle search input
-  const handleSearch = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  // Handle filter changes
-  const handleFilterChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+
+    // Convert numeric inputs to number
+    const numericFields = ["minPrice", "maxPrice", "rating"];
+    const newValue = numericFields.includes(name) ? Number(value) : value;
+
+    setFilters((prev) => ({
+      ...prev,
+      [name]: newValue,
+    }));
   };
 
-  // Ensure products.result is an array
   const allProducts = Array.isArray(products?.result) ? products.result : [];
 
-  // Filter products based on search term & filters
-  const filteredProducts = allProducts.filter((product: { name: string; category: string; brand: string; price: number; }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const filteredProducts = allProducts.filter((product: any) => {
+    const searchTermLower = searchTerm.toLowerCase();
     const matchesSearch =
-      searchTerm === "" || product.name.toLowerCase().includes(searchTerm.toLowerCase());
+      searchTerm === "" ||
+      product.name?.toLowerCase().includes(searchTermLower) ||
+      product.brand?.toLowerCase().includes(searchTermLower) ||
+      product.category?.toLowerCase().includes(searchTermLower) ||
+      String(product.price).includes(searchTermLower) ||
+      String(product.rating).includes(searchTermLower);
+  
     const matchesCategory = filters.category ? product.category === filters.category : true;
     const matchesBrand = filters.brand ? product.brand === filters.brand : true;
+    const matchesRating = filters.rating > 0 ? (product.rating ?? 0) >= filters.rating : true;
     const matchesPrice = product.price >= filters.minPrice && product.price <= filters.maxPrice;
-    return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
+  
+    return matchesSearch && matchesCategory && matchesBrand && matchesRating && matchesPrice;
   });
+  
+  
 
-  // if (isLoading) return <p className="text-center text-gray-700">Loading...</p>;
-  // if (isError) return <p className="text-center text-red-500">Error: {error?.message}</p>;
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * productsPerPage,
+    currentPage * productsPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 min-h-[600px]">
-      <h1 className="text-3xl font-bold text-center mb-6 mt-24">All Products</h1>
-
+    <div className="max-w-7xl mx-auto p-4 mt-24 min-h-screen">
       {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Search by name..."
-        value={searchTerm}
-        onChange={handleSearch}
-        className="w-full p-2 border rounded-md"
-      />
-
-      {/* Filters */}
-      <div className="flex gap-4 my-4">
+      <div className="mb-6 text-center">
         <input
-          type="number"
-          name="minPrice"
-          value={filters.minPrice}
-          onChange={handleFilterChange}
-          className="p-2 border rounded-md"
-          placeholder="Min Price"
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="w-full max-w-md p-3 border rounded-lg shadow-sm"
         />
-        <input
-          type="number"
-          name="maxPrice"
-          value={filters.maxPrice}
-          onChange={handleFilterChange}
-          className="p-2 border rounded-md"
-          placeholder="Max Price"
-        />
-        <select name="category" onChange={handleFilterChange} className="p-2 border rounded-md">
-          <option value="">All Categories</option>
-          <option value="Mountain">Mountain</option>
-          <option value="Road">Road</option>
-        </select>
-        <select name="brand" onChange={handleFilterChange} className="p-2 border rounded-md">
-          <option value="">All Brands</option>
-          <option value="Giant">Giant</option>
-          <option value="Trek">Trek</option>
-        </select>
       </div>
 
-      {/* Products List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProducts.length > 0 ? (
-          filteredProducts?.slice(-6).reverse().map((product: { id: Key | null | undefined; image: string | undefined; name: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; brand: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; category: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; price: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; _id: any; }) => (
-            <div key={product.id} className="border p-4 rounded-lg shadow-md">
-              <img src={product.image}  className="w-full h-40 rounded-md" />
-              <h3 className="text-xl font-semibold mt-2">{product.name}</h3>
-              <p className="text-gray-600">
-                {product.brand} - {product.category}
-              </p>
-              <p className="font-bold">${product.price}</p>
-              <Link to={`/product/${product._id}`}>
-              <button className="bg-primary text-white px-4 py-2 rounded-md mt-2">
-                View Details
-              </button>
-              </Link>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500 col-span-full">No products found.</p>
-        )}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Sidebar Filters */}
+        <div className="w-full lg:w-1/4 border p-4 rounded-lg shadow-sm space-y-4">
+          <h2 className="text-lg font-semibold">Filter</h2>
+
+          <select name="category" onChange={handleFilterChange} className="w-full p-2 border rounded-md">
+            <option value="">All Categories</option>
+            <option value="Mountain">Mountain</option>
+            <option value="Road">Road</option>
+          </select>
+
+          <select name="brand" onChange={handleFilterChange} className="w-full p-2 border rounded-md">
+            <option value="">All Brands</option>
+            <option value="Giant">Giant</option>
+            <option value="Trek">Trek</option>
+          </select>
+
+          <div className="flex items-center justify-between">
+            <input
+              type="number"
+              name="minPrice"
+              placeholder="Min Price"
+              value={filters.minPrice}
+              onChange={handleFilterChange}
+              className="w-[48%] p-2 border rounded-md"
+            />
+            <input
+              type="number"
+              name="maxPrice"
+              placeholder="Max Price"
+              value={filters.maxPrice}
+              onChange={handleFilterChange}
+              className="w-[48%] p-2 border rounded-md"
+            />
+          </div>
+
+          <select name="rating" onChange={handleFilterChange} className="w-full p-2 border rounded-md">
+            <option value="0">Any Rating</option>
+            <option value="4">4★ and up</option>
+            <option value="3">3★ and up</option>
+            <option value="2">2★ and up</option>
+            <option value="1">1★ and up</option>
+          </select>
+        </div>
+
+        {/* Product Cards */}
+        <div className="w-full lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {paginatedProducts.length > 0 ? (
+            paginatedProducts.map((product: any) => (
+              <div key={product._id} className="border p-4 rounded-lg shadow-md">
+                <img src={product.image} className="w-full h-40 object-cover rounded-md" />
+                <h3 className="text-xl font-semibold mt-2">{product.name}</h3>
+                <p className="text-gray-600">
+                  {product.brand} - {product.category}
+                </p>
+                <p className="font-bold text-green-600">${product.price}</p>
+                <Link to={`/product/${product._id}`}>
+                  <button className="bg-primary text-white px-4 py-2 rounded-md mt-2 w-full">
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500 col-span-full">No products found.</p>
+          )}
+        </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-6 gap-2">
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index}
+            className={`px-4 py-2 rounded-md border ${
+              currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-100"
+            }`}
+            onClick={() => handlePageChange(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { router } from "./routes/Routes";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/features/store";
 import { PersistGate } from "redux-persist/integration/react";
+import "leaflet/dist/leaflet.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

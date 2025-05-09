@@ -5,6 +5,9 @@ import { useGetProductByIdQuery } from "../redux/api/productApi";
 import { usePlaceOrderMutation } from "../redux/api/orderApi";
 import { useAppSelector } from "../redux/features/hooks";
 import { useGetUsersQuery } from "../redux/api/authApi";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Checkout = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +16,8 @@ const Checkout = () => {
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState("SurjoPay");
   const [placeOrder] = usePlaceOrderMutation();
+
+ 
 
   const userInLocal = useAppSelector((state) => state.auth.user);
   const { data } = useGetUsersQuery();
@@ -24,34 +29,33 @@ const Checkout = () => {
 
   const handleOrder = async () => {
     if (!product) return;
-
+  
     if (quantity > product.result.stock) {
-      alert("Not enough stock available!");
+      toast.error("Not enough stock available!");
       return;
     }
-
+  
     try {
       const response = await placeOrder({
         user: user?._id,
-        products: [
-          {
-            product: id,
-            quantity,
-          },
-        ],
+        products: [{ product: id, quantity }],
       }).unwrap();
-      console.log(response)
-      const orderId = response?.data?.order._id
+  
+      console.log(response);
+  
+      const orderId = response?.data?.order?._id;
       const paymentUrl = response?.data?.payment?.checkout_url;
-      console.log('orderId',orderId)
-
-    if (orderId && paymentUrl) {
-      localStorage.setItem("orderId", orderId);
-      window.location.href = paymentUrl
-    }
+  
+      if (orderId && paymentUrl) {
+        localStorage.setItem("orderId", orderId);
+        toast.success("Order placed successfully! Redirecting to payment...");
+        setTimeout(() => {
+          window.location.href = paymentUrl;
+        }, 2000);
+      }
     } catch (error) {
-      alert("Order failed. Try again.");
-    }
+      toast.error("Order failed. Try again.");
+    } 
   };
 
   return (
@@ -106,6 +110,7 @@ const Checkout = () => {
           </>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };
