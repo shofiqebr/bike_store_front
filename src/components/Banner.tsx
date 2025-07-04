@@ -18,12 +18,12 @@ const Banner = () => {
         className="flex justify-around items-center">
               {/* Text section */}
               
-      <div className="text-black w-full  md:w-1/2 text-center  space-y-4">
-        <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight text-left pl-20 whitespace-nowrap">
+      <div className="text-black w-full  md:w-1/2 flex flex-col justify-center items-center  space-y-4 ">
+        <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight  whitespace-nowrap">
           Experience the  {' '}
           <span className="text-accent">
             <Typewriter
-              words={["Future of Speed", " Glamourous Design", "Feel of Comfort", " Latest Technology"]}
+               words={["Speed", "Style", "Comfort", "Technology"]}
               loop={0}
               cursor
               cursorStyle=""
@@ -33,7 +33,7 @@ const Banner = () => {
             />
           </span>
         </h1>
-        <p className="text-lg md:text-xl font-medium text-gray-600">
+        <p className="text-lg md:text-xl font-medium text-gray-600 text-center ">
           Ride smarter, faster, and safer with our innovative <br />  electric and performance bikes.
         </p>
       </div>
